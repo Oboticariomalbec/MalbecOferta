@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oferta Malbec Bleu</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0c1b2a;
+      color: #ffffff;
+    }
+    header {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background-color: #0c1b2a;
+    }
+    header img {
+      width: 100%;
+      max-width: 1200px;
+    }
+    .banner {
+      background-color: #162d44;
+      padding: 20px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 30px auto;
+      border-radius: 10px;
+    }
+    .banner strong {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+    #video-container {
+      text-align: center;
+      margin: 20px auto;
+    }
+    iframe {
+      width: 90%;
+      max-width: 560px;
+      height: 315px;
+      border-radius: 10px;
+    }
+    .depoimentos {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 10px;
+    }
+    .depoimento {
+      background-color: #1c2f48;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .depoimento img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .formulario {
+      background-color: #1c2f48;
+      max-width: 600px;
+      margin: 30px auto;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .formulario input, .formulario button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+    }
+    .formulario button {
+      background-color: #0b4d6d;
+      color: white;
+      font-size: 18px;
+    }
+    #estoque {
+      text-align: center;
+      font-size: 20px;
+      margin: 20px 0;
+      color: #ffd700;
+    }
+    #novo-depoimento {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #1c2f48;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    #mensagemPix, #mensagemPedido {
+      display: none;
+      background-color: #0b4d6d;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="file_0000000030386243b269f5f691727a14 (1).png" alt="Banner Malbec Bleu">
+  </header>
+  <div id="video-container">
+    <iframe src="https://www.youtube.com/embed/Rl218vrvi5Q" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="banner">
+    <strong>Essa oferta é 100% legítima!</strong>
+    Sabemos que há muitos golpes na internet e entendemos o seu receio. Esta promoção é real e temporária: conseguimos um lote exclusivo de perfumes Malbec Bleu com preço abaixo do mercado devido a uma negociação direta com o distribuidor. Além disso, estamos oferecendo um relógio masculino de brinde para tornar essa oferta ainda mais imperdível. Não apoiamos nenhum tipo de fraude – se você já caiu em um golpe, registre um boletim de ocorrência. Aqui sua compra é segura!
+  </div>
+  <div id="estoque">Estoque disponível: <span id="contador">400</span> unidades</div>
+  <div class="depoimentos" id="depoimentos"></div>
+  <div id="novo-depoimento">
+    <h3>Adicionar Depoimento</h3>
+    <input type="text" id="nomeCliente" placeholder="Seu nome">
+    <input type="text" id="textoDepoimento" placeholder="Seu depoimento">
+    <button onclick="adicionarDepoimento()">Enviar Depoimento</button>
+  </div>
+  <div class="formulario">
+    <h2>Finalize seu pedido</h2>
+    <input type="text" placeholder="Nome completo">
+    <input type="text" placeholder="CPF">
+    <input type="text" id="cep" placeholder="CEP" onblur="buscarEndereco()">
+    <input type="text" id="endereco" placeholder="Endereço completo">
+    <input type="text" placeholder="Telefone">
+    <input type="email" placeholder="E-mail">
+    <button onclick="finalizarPedido()">Finalizar Pedido</button>
+    <button id="copiarPixBtn" onclick="copiarChavePix()">Copiar Chave PIX</button>
+    <div id="mensagemPix">Chave PIX copiada com sucesso</div>
+    <div id="mensagemPedido">Tudo certo com o seu pedido, agora finalize o pagamento</div>
+  </div>
+  <script>
+    const nomes = ["Carlos Almeida", "João Silva", "Roberto Souza", "Bruno Henrique", "André Costa", "Marcos Pereira", "Leandro Lima", "Thiago Nascimento", "Fernando Rocha", "Diego Azevedo", "Lucas Ribeiro", "Paulo Mendes", "Ricardo Dias", "Vitor Ferreira", "Gustavo Teixeira", "Maurício Gomes", "Fábio Correia", "Marcelo Carvalho", "Renato Oliveira", "Henrique Castro", "Danilo Barbosa", "Felipe Martins", "Eduardo Monteiro", "Alexandre Pinto", "Igor Faria", "César Luz", "Rogério Antunes", "Wagner Ramos", "Rafael Silveira", "Caio Brito", "Sérgio Tavares", "Érico Duarte", "Juliano Lopes", "Daniel Xavier", "Alan Queiroz", "Luan Braga", "Nicolas Paiva", "Jonas Torres", "Márcio Cunha", "Vinícius Viana", "Tiago Aguiar", "Jefferson Meireles", "Davi Moreira", "Pedro Sena", "William Rocha", "Samuel Vieira", "Ruan Nogueira", "Jonathan Passos", "Douglas Pacheco", "Adriano Mello", "Otávio Borges"];
+    const frasesUnicas = [...new Set([
+      "Produto original e bem embalado.", "Confesso que achei que era golpe, mas chegou tudo certo.",
+      "Perfume incrível e o relógio é de ótima qualidade.", "Fiquei com receio, mas recomendo a todos.",
+      "Entrega super rápida, gostei muito.", "Chegou antes do prazo e o brinde é show.",
+      "Vale muito a pena, ótima fragrância.", "Comprei para testar e me surpreendi.",
+      "Fui indicado por um amigo e adorei.", "O preço tá ótimo, sem palavras.",
+      "Relógio muito bonito, combina com tudo.", "Chegou no prazo e o perfume é top.",
+      "Muito satisfeito com a compra.", "Sinceramente, melhor compra do ano.",
+      "Tive medo de ser golpe, mas deu tudo certo.", "Compro sempre e nunca tive problemas.",
+      "Excelente atendimento, estão de parabéns.", "Relógio brinde de ótima qualidade.",
+      "Achei que fosse arriscado, mas confiei.", "Minha esposa adorou a fragrância.",
+      "Com certeza comprarei novamente.", "Perfume marcante, adorei.",
+      "Produto chegou no prazo certinho.", "Já recomendei pros amigos.",
+      "Serviço confiável e rápido.", "Perfeito para o dia a dia.",
+      "Embalagem bem feita e discreta.", "Brinde chegou junto com o perfume.",
+      "Muito acima das expectativas.", "Compra segura e entrega rápida."
+    ])];
+    const depoimentosData = nomes.map((nome, i) => ({
+      nome,
+      texto: frasesUnicas[i % frasesUnicas.length] + `<br><em>há ${Math.floor(Math.random() * 60)} segundos</em>`
+    }));
+    let index = 0;
+    const container = document.getElementById('depoimentos');
+    function mostrarDepoimento() {
+      if (index < depoimentosData.length) {
+        const depo = document.createElement('div');
+        depo.className = 'depoimento';
+        depo.innerHTML = `<img src="BOT_83188_MALBEC-BLEU_COLONIA_AMBIENTADA.jpg" alt="Cliente"><div><strong>${depoimentosData[index].nome}</strong><br>${depoimentosData[index].texto}</div>`;
+        container.appendChild(depo);
+        index++;
+      }
+    }
+    setInterval(mostrarDepoimento, 3000);
+    function finalizarPedido() {
+      const mensagem = document.getElementById('mensagemPedido');
+      mensagem.style.display = 'block';
+      setTimeout(() => {
+        mensagem.style.display = 'none';
+      }, 4000);
+      document.getElementById('copiarPixBtn').scrollIntoView({ behavior: 'smooth' });
+    }
+    function copiarChavePix() {
+      navigator.clipboard.writeText("chavepix@exemplo.com");
+      const msg = document.getElementById('mensagemPix');
+      msg.style.display = 'block';
+      setTimeout(() => {
+        msg.style.display = 'none';
+      }, 3000);
+    }
+    function adicionarDepoimento() {
+      const nome = document.getElementById('nomeCliente').value.trim();
+      const texto = document.getElementById('textoDepoimento').value.trim();
+      if (nome && texto) {
+        const depo = document.createElement('div');
+        depo.className = 'depoimento';
+        depo.innerHTML = `<img src="https://i.imgur.com/tX1D2vY.png" alt="Cliente"><div><strong>${nome}</strong><br>${texto}<br><em>há ${Math.floor(Math.random() * 60)} segundos</em></div>`;
+        container.appendChild(depo);
+        document.getElementById('nomeCliente').value = '';
+        document.getElementById('textoDepoimento').value = '';
+      } else {
+        alert('Preencha todos os campos!');
+      }
+    }
+    let estoque = 400;
+    const contador = document.getElementById("contador");
+    setInterval(() => {
+      if (estoque > 0) {
+        estoque -= 5;
+        contador.textContent = estoque;
+      }
+    }, 5000);
+    function buscarEndereco() {
+      const cep = document.getElementById('cep').value.replace(/\D/g, '');
+      if (cep.length === 8) {
+        fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          .then(res => res.json())
+          .then(data => {
+            if (!data.erro) {
+              document.getElementById('endereco').value = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
+            }
+          });
+      }
+    }
+  </script>
+</body>
+</html>
